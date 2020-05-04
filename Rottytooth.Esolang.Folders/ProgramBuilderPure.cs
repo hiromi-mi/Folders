@@ -73,11 +73,11 @@ namespace Rottytooth.Esolang.Folders
 
                     case (int)CommandEnum.While:
                         program.Append("while(");
-                        ParseExpression(baseDir.GetDirectories()[0].FullName, program);
+                        ParseExpression(baseDir.GetDirectories()[1].FullName, program);
                         program.Append(")");
                         program.Append("\n{\n");
 
-                        commandDirs = subDirs[1].GetDirectories().CustomSort().ToArray();
+                        commandDirs = subDirs[2].GetDirectories().CustomSort().ToArray();
 
                         for (int i = 1; i < commandDirs.Length; i++)
                         {
@@ -86,26 +86,18 @@ namespace Rottytooth.Esolang.Folders
                         program.Append("\n}\n");
                         break;
                     case (int)CommandEnum.Declare:
-                        string variableType = ParseType(baseDir.GetDirectories()[1].Name).ToString().ToLower();
-                        string variableName = "Var" + baseDir.GetDirectories()[0].GetDirectories().Length.ToString();
+                        string variableType = ParseType(baseDir.GetDirectories()[1].FullName).ToString().ToLower();
+                        string variableName = "Var" + baseDir.GetDirectories()[2].GetDirectories().Length.ToString();
 
-                        declarations.Append("\npublic static ");
                         declarations.Append(variableType);
                         declarations.Append(" ");
                         declarations.Append(variableName);
-                        declarations.AppendLine(@" {
-                        get
-                        {
-                            return (" + variableType + @") _varManager.GetVariable(""" + variableName + @""");
-                        } set {
-                            _varManager.SetVariable(""" + variableName + @""", value);
-                        }
-                    }");
+                        declarations.Append(";\n");
 
                         break;
                     case (int)CommandEnum.Let:
                         // second directory is the variable name
-                        program.Append(" Var");
+                        program.Append("Var");
                         program.Append(subDirs[1].GetDirectories().Length);
 
                         // third directory is the expression
@@ -114,15 +106,15 @@ namespace Rottytooth.Esolang.Folders
                         program.Append(");\n");
                         break;
                     case (int)CommandEnum.Print:
-                        program.Append("Console.Write(");
+                        program.Append("std::cout << ");
                         ParseExpression(subDirs[1].FullName, program);
-                        program.Append(".ToString()");
-                        program.Append(");\n");
+                        program.Append(";\n");
                         break;
                     case (int)CommandEnum.Input:
-                        ParseExpression(subDirs[1].FullName, program);
-                        program.Append(" = Console.ReadLine(");
-                        program.Append(");\n");
+                        program.Append("std::cin >>");
+                        program.Append(" Var");
+                        program.Append(subDirs[1].GetDirectories().Length);
+                        program.Append(";\n");
                         break;
                     default:
 
@@ -215,6 +207,30 @@ namespace Rottytooth.Esolang.Folders
                                 program.Append("'" + ((char)value).ToString() + "'");
                                 break;
                         }
+                        break;
+                    case (int)ExpressionEnum.EqualTo:
+                        // second and third folders give us the two things to multiply
+                        program.Append("(");
+                        ParseExpression(subDirs[1].FullName, program);
+                        program.Append(" == ");
+                        ParseExpression(subDirs[2].FullName, program);
+                        program.Append(" ) ");
+                        break;
+                    case (int)ExpressionEnum.GreaterThan:
+                        // second and third folders give us the two things to multiply
+                        program.Append("(");
+                        ParseExpression(subDirs[1].FullName, program);
+                        program.Append(" > ");
+                        ParseExpression(subDirs[2].FullName, program);
+                        program.Append(" ) ");
+                        break;
+                    case (int)ExpressionEnum.LessThan:
+                        // second and third folders give us the two things to multiply
+                        program.Append("(");
+                        ParseExpression(subDirs[1].FullName, program);
+                        program.Append(" < ");
+                        ParseExpression(subDirs[2].FullName, program);
+                        program.Append(" ) ");
                         break;
                 }
             }

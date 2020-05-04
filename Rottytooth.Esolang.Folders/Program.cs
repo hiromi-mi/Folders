@@ -53,7 +53,7 @@ namespace Rottytooth.Esolang.Folders
             Console.WriteLine(); // clear line after program output
             if (succeeded)
             {
-                Console.WriteLine("Complete");
+                Console.Error.WriteLine("Complete");
             }
             else
             {
@@ -98,70 +98,11 @@ namespace Rottytooth.Esolang.Folders
 
             StringBuilder errorList = new StringBuilder();
 
-            CompilerResults results;
-
             string entireProgram =
-                @"using System;
-                using System.IO;
-                using Rottytooth.Esolang.Folders.Runtime;
-                public static class Program {
+                "#include <bits/stdc++.h>\n" + builder.Declarations + "int main() {\n" + builder.ProgramText + "\n}";
 
-                    private static VarManager _varManager;
+            Console.WriteLine(entireProgram);
 
-                    static Program() {
-                        _varManager = new VarManager(""" + builder.ProgramName + @""");
-                    }
-
-                " + builder.Declarations +
-                @"
-                  public static void Main() {
-                    " + builder.ProgramText + @"
-                  }
-                }
-                
-                public class StartUp
-                {
-                    public void Execute()
-                    {
-                        Program.Main();
-                    }
-                }";
-
-            using (CSharpCodeProvider csc =
-                new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v4.0" } }))
-            {
-
-                if (exe) // building to an executable
-                {
-                    CompilerParameters parameters = new CompilerParameters(new[] { "mscorlib.dll", "System.Core.dll" },
-                        builder.ProgramName + ".exe", true);
-                    parameters.ReferencedAssemblies.Add("Rottytooth.Esolang.Folders.Runtime.dll");
-                    parameters.GenerateExecutable = true;
-
-                    results = csc.CompileAssemblyFromSource(parameters, entireProgram);
-
-                }
-                else // compiling in-memory and executing
-                {
-                    CompilerParameters parameters = new CompilerParameters(new[] { "mscorlib.dll", "System.Core.dll" })
-                        { GenerateInMemory = true };
-                    parameters.ReferencedAssemblies.Add("Rottytooth.Esolang.Folders.Runtime.dll");
-
-                    results = csc.CompileAssemblyFromSource(parameters, entireProgram);
-
-                    if (results.Errors != null && results.Errors.Count == 0)
-                    {
-                        Type type = results.CompiledAssembly.GetType("StartUp");
-
-                        var obj = Activator.CreateInstance(type);
-
-                        var output = type.GetMethod("Execute").Invoke(obj, new object[] { });
-                    }
-                }
-            }
-
-            // output any errors
-            results.Errors.Cast<CompilerError>().ToList().ForEach(error => errorList.AppendLine(error.ErrorText));
 
             if (errorList.Length > 0)
             {
