@@ -175,7 +175,7 @@ namespace Rottytooth.Esolang.Folders
                         // second and third folders give us the two things to divide
                         program.Append("(");
                         ParseExpression(subDirs[1].FullName, program);
-                        program.Append(" * ");
+                        program.Append(" / ");
                         ParseExpression(subDirs[2].FullName, program);
                         program.Append(" ) ");
                         break;
