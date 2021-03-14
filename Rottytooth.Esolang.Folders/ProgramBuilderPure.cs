@@ -136,8 +136,8 @@ namespace Rottytooth.Esolang.Folders
             }
             int expressionID = subDirs[0].GetDirectories().Length;
 
-            try
-            {
+            /*try
+            {*/
                 switch (expressionID)
                 {
                     case (int)ExpressionEnum.Variable:
@@ -230,12 +230,16 @@ namespace Rottytooth.Esolang.Folders
                         ParseExpression(subDirs[2].FullName, program);
                         program.Append(" ) ");
                         break;
+                    default:
+                        throw new SyntaxError($"Could not determine type of expression at {baseDir.FullName}, with {expressionID} folders.");
+
                 }
+                /*
             }
             catch (Exception)
             {
                 throw new SyntaxError("Expression failed to build at path " + baseDir.FullName);
-            }
+            }*/
         }
 
         /// <summary>
