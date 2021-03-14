@@ -157,7 +157,7 @@ namespace Rottytooth.Esolang.Folders
                         // second and third folders give us the two things to subtract
                         program.Append("(");
                         ParseExpression(subDirs[1].FullName, program);
-                        program.Append(" - ");
+                        program.Append(" - "); Console.WriteLine(@"Subtract to: {subDirs[2].FullName} with {expressionID} and {(int) ExpressionEnum.LiteralValue} and {baseDir.FullName}"):
                         ParseExpression(subDirs[2].FullName, program);
                         program.Append(" ) ");
                         break;
