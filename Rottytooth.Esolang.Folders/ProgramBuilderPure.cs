@@ -128,7 +128,8 @@ namespace Rottytooth.Esolang.Folders
         {
             DirectoryInfo baseDir = new DirectoryInfo(path);
 
-            DirectoryInfo[] subDirs = baseDir.GetDirectories();
+            DirectoryInfo[] subDirs = baseDir.GetDirectories().CustomSort().ToArray();
+            //DirectoryInfo[] subDirs = baseDir.GetDirectories();
 
             if (subDirs.Length < 2)
             {
@@ -157,7 +158,7 @@ namespace Rottytooth.Esolang.Folders
                         // second and third folders give us the two things to subtract
                         program.Append("(");
                         ParseExpression(subDirs[1].FullName, program);
-                        program.Append(" - "); Console.WriteLine("Subtract to: " + subDirs[2].FullName + " with "+ expressionID + " and " + ExpressionEnum.LiteralValue +" and "+baseDir.FullName);
+                        program.Append(" - "); //Console.WriteLine("Subtract to: " + subDirs[2].FullName + " with "+ expressionID + " and " + ExpressionEnum.LiteralValue +" and "+baseDir.FullName);
                         ParseExpression(subDirs[2].FullName, program);
                         program.Append(" ) ");
                         break;
