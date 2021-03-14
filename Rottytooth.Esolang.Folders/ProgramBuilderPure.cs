@@ -72,7 +72,7 @@ namespace Rottytooth.Esolang.Folders
 
                     case (int)CommandEnum.While:
                         program.Append("while(");
-                        ParseExpression(baseDir.GetDirectories()[1].FullName, program);
+                        ParseExpression(subDirs[1].FullName, program);
                         program.Append(")");
                         program.Append("\n{\n");
 
@@ -85,8 +85,8 @@ namespace Rottytooth.Esolang.Folders
                         program.Append("\n}\n");
                         break;
                     case (int)CommandEnum.Declare:
-                        string variableType = ParseType(baseDir.GetDirectories()[1].FullName).ToString().ToLower();
-                        string variableName = "Var" + baseDir.GetDirectories()[2].GetDirectories().Length.ToString();
+                        string variableType = ParseType(subDirs[1].FullName).ToString().ToLower();
+                        string variableName = "Var" + subDirs[2].GetDirectories().Length.ToString();
 
                         declarations.Append(variableType);
                         declarations.Append(" ");
