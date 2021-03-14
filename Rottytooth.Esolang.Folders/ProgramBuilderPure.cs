@@ -231,7 +231,8 @@ namespace Rottytooth.Esolang.Folders
                         program.Append(" ) ");
                         break;
                     default:
-                        throw new SyntaxError($"Could not determine type of expression at {baseDir.FullName}, with {expressionID} folders.");
+                        var thestr = program.ToString();
+                        throw new SyntaxError($"Could not determine type of expression at {baseDir.FullName}, with {expressionID} folders. {program.thestr}");
 
                 }
                 /*
